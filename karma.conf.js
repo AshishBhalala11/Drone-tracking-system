@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/flyt-base-assign'),
+      dir: require('path').join(__dirname, './coverage/drone-tracking-system'),
       subdir: '.',
       reporters: [
         { type: 'html' },

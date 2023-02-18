@@ -2,3 +2,32 @@
   width: 100vw;
   height: 100vh;
 }
+
+#add-drone-button {
+  position: fixed;
+  top: 2rem;
+  left: 3rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #247aa9;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px #999;
+}
+
+.button:hover {background-color: #1c5793}
+
+.button:active {
+  background-color: #1c5793;
+  box-shadow: 0 5px #666;
+  transform: translateY(2px);
+}

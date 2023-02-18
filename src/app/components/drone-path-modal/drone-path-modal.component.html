@@ -1,0 +1,59 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="header-text">Enter Drone Details</h2>
+    </div>
+    <div class="modal-body">
+      <ng-container [formGroup]="droneForm">
+        <div>
+          <label class="label" for="drone-name">Drone Name <span class="color-danger">*</span></label>
+          <input class="w-50" id="drone-name" formControlName="droneName">
+        </div>
+
+        <div class="mt-1">Add time series data of drone location below</div>
+        <table formArrayName="timeData">
+          <thead>
+            <th class="w-25">Time</th>
+            <th class="w-25">Latitude</th>
+            <th class="w-25">Longitude</th>
+            <th class="w-25"></th>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let data of timeDataControl.controls; let i = index" [formGroupName]="i">
+              <tr>
+                <td class="w-25">
+                  <input type="datetime-local" formControlName="time">
+                </td>
+                <td class="w-25">
+                  <input type="number" formControlName="latitude">
+                </td>
+                <td class="w-25">
+                  <input type="number" formControlName="longitude">
+                </td>
+                <td class="w-25 float-right" style="padding: 10px 6px 0 0;">
+                  <span class="w3-large cursor-pointer" (click)="removeTimeLocationData(i)">
+                    <i class="fa fa-trash"></i>
+                  </span>
+                </td>
+              </tr>
+            </ng-container>
+            <tr>
+              <td colspan="4">
+                <button class="btn btn-link" type="button" (click)="addTimeLocationData()">
+                  +Add
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-button">
+        <button class="btn btn-primary" (click)="onSubmit()">stimulate</button>
+        <button class="btn btn-outline" (click)="onCancel()">cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
