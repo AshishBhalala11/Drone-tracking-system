@@ -7,6 +7,7 @@ import { GoogleMapPageComponent } from './components/google-map-page/google-map-
 import { DronePathModalComponent } from './components/drone-path-modal/drone-path-modal.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     NoopAnimationsModule
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

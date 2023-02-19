@@ -41,7 +41,7 @@
             <ng-container *ngFor="let data of timeDataControl.controls; let i = index" [formGroupName]="i">
               <tr>
                 <td class="w-25">
-                  <input type="datetime-local" formControlName="time">
+                  <input type="datetime-local" formControlName="time" [value]="data.value.time">
                 </td>
                 <td class="w-25">
                   <input type="number" formControlName="latitude">

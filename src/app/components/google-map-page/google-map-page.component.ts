@@ -56,6 +56,11 @@ export class GoogleMapPageComponent implements OnInit {
     const dronePathLine = this.addPoliline(dronePathCoordinates);
     const marker = this.addMarker(currLocaion);
 
+    currLocaion = {
+      lat: timeSeriesData[0].latitude,
+      lng: timeSeriesData[0].longitude
+    }
+
     timeSeriesData.forEach((tData) => {
       const locationCoordinates = {
         lat: tData.latitude,
@@ -71,6 +76,8 @@ export class GoogleMapPageComponent implements OnInit {
 
     dronePathLine.setPath(dronePathCoordinates);
     dronePathLine.setMap(this.map);
+
+    marker.setPosition(currLocaion);
 
     this.dronePathData.push({
       name: name,

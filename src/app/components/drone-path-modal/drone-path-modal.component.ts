@@ -12,6 +12,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'drone-path-modal',
@@ -27,7 +29,10 @@ export class DronePathModalComponent {
 
   selectedFile: File;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private datePipe: DatePipe
+  ) {}
 
   droneForm: FormGroup = this.fb.group({
     droneName: ['', Validators.required],
@@ -42,8 +47,9 @@ export class DronePathModalComponent {
   }
 
   createTimeLocationForm(time?: any, latitude?: any, longitude?: any) {
+    const currentTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
     const formGrp = this.fb.group({
-      time: [time || '', Validators.required],
+      time: [time || currentTime, Validators.required],
       latitude: [parseInt(latitude) || '', Validators.required],
       longitude: [parseInt(longitude) || '', Validators.required],
     });
