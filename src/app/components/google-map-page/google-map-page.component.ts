@@ -21,21 +21,21 @@ export class GoogleMapPageComponent implements OnInit {
   };
 
   ngOnInit() {
-    navigator.geolocation.getCurrentPosition( position => {
+    navigator.geolocation.getCurrentPosition((position) => {
       this.location = {
         lat: position.coords.latitude,
-        lng: position.coords.longitude
+        lng: position.coords.longitude,
       };
 
       this.map = new google.maps.Map(this.googleMap.nativeElement, {
         ...this.option,
-        center: this.location
+        center: this.location,
       });
 
       let marker = new google.maps.Marker({
         position: this.location,
-        map: this.map
-      })
+        map: this.map,
+      });
     });
   }
 
@@ -76,7 +76,7 @@ export class GoogleMapPageComponent implements OnInit {
       name: name,
       locationMarker: marker,
       pathPolyLine: dronePathLine,
-      pathCordinates: dronePathCoordinates
+      pathCordinates: dronePathCoordinates,
     });
   }
 
@@ -93,7 +93,7 @@ export class GoogleMapPageComponent implements OnInit {
   addMarker(currLocaion: google.maps.LatLngLiteral) {
     return new google.maps.Marker({
       position: currLocaion,
-      map: this.map
+      map: this.map,
     });
   }
 }

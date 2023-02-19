@@ -1,14 +1,24 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'drone-path-modal',
   templateUrl: './drone-path-modal.component.html',
   styleUrls: ['./drone-path-modal.component.css'],
 })
-
 export class DronePathModalComponent {
-
   @Output()
   modalClosed = new EventEmitter<any>();
 
@@ -17,13 +27,11 @@ export class DronePathModalComponent {
 
   selectedFile: File;
 
-  constructor(
-    private fb: FormBuilder
-  ) { }
+  constructor(private fb: FormBuilder) {}
 
   droneForm: FormGroup = this.fb.group({
     droneName: ['', Validators.required],
-    timeData: this.fb.array([], Validators.required)
+    timeData: this.fb.array([], Validators.required),
   });
 
   droneNameControl: FormControl = <FormControl>this.droneForm.get('droneName');
@@ -35,10 +43,10 @@ export class DronePathModalComponent {
 
   createTimeLocationForm(time?: any, latitude?: any, longitude?: any) {
     const formGrp = this.fb.group({
-      time: [time ||'', Validators.required],
+      time: [time || '', Validators.required],
       latitude: [parseInt(latitude) || '', Validators.required],
-      longitude: [parseInt(longitude) || '', Validators.required]
-    })
+      longitude: [parseInt(longitude) || '', Validators.required],
+    });
     return formGrp;
   }
 
@@ -51,7 +59,7 @@ export class DronePathModalComponent {
     const extension = '.csv';
     const data = 'Time (YYYY-MM-DD HH:MM:SS),Latitude,Longitude';
 
-    const blob = new Blob([data], {type: 'application/octet-stream'});
+    const blob = new Blob([data], { type: 'application/octet-stream' });
     const url = window.URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.download = `${fileName}${extension}`;
@@ -72,16 +80,22 @@ export class DronePathModalComponent {
       const binarystr: string = e.target.result;
       const rowWiseArray = binarystr.split('\n');
 
-      for (let i = 1; i < rowWiseArray.length; i++){
+      for (let i = 1; i < rowWiseArray.length; i++) {
         if (rowWiseArray[i] && !rowWiseArray[i].trim().startsWith(',')) {
           const timeSeriesDataArray = rowWiseArray[i].split(',');
-          this.timeDataControl.push(this.createTimeLocationForm(timeSeriesDataArray[0], timeSeriesDataArray[1], timeSeriesDataArray[2]));
+          this.timeDataControl.push(
+            this.createTimeLocationForm(
+              timeSeriesDataArray[0],
+              timeSeriesDataArray[1],
+              timeSeriesDataArray[2]
+            )
+          );
         }
       }
-    }
+    };
   }
 
-  removeFile(){
+  removeFile() {
     this.selectedFile = null;
   }
 
@@ -92,5 +106,4 @@ export class DronePathModalComponent {
   onSubmit() {
     this.modalClosed.emit(this.droneForm);
   }
-
 }

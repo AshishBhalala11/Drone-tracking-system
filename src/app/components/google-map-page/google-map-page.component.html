@@ -5,7 +5,6 @@
 <button class="button" id="add-drone-button" (click)="openDroneModal()">Add Drone Data</button>
 
 <section *ngIf="dronePathModalOpen">
-  <drone-path-modal
-    (modalClosed)="modalClosed($event)">
+  <drone-path-modal (modalClosed)="modalClosed($event)">
   </drone-path-modal>
 </section>

@@ -18,7 +18,7 @@
           </div>
           <div class="mt-1">
             <input class="w-75 d-none" type="file" (click)="fileInput.value = null" value="" accept=".csv"
-            (change)="onFileSelected($event)" #fileInput>
+              (change)="onFileSelected($event)" #fileInput>
             <button *ngIf="!selectedFile" class="btn btn-primary" (click)="fileInput.click()">import</button>
             <div *ngIf="selectedFile">
               <label class="grey-text">{{ selectedFile.name }}</label>
