@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
@@ -11,6 +11,11 @@ export class DronePathModalComponent {
 
   @Output()
   modalClosed = new EventEmitter<any>();
+
+  @ViewChild('fileInput')
+  fileInput: ElementRef;
+
+  selectedFile: File;
 
   constructor(
     private fb: FormBuilder
@@ -28,11 +33,11 @@ export class DronePathModalComponent {
     this.timeDataControl.push(this.createTimeLocationForm());
   }
 
-  createTimeLocationForm() {
+  createTimeLocationForm(time?: any, latitude?: any, longitude?: any) {
     const formGrp = this.fb.group({
-      latitude: ['', Validators.required],
-      longitude: ['', Validators.required],
-      time: ['', Validators.required]
+      time: [time ||'', Validators.required],
+      latitude: [parseInt(latitude) || '', Validators.required],
+      longitude: [parseInt(longitude) || '', Validators.required]
     })
     return formGrp;
   }
@@ -41,12 +46,50 @@ export class DronePathModalComponent {
     this.timeDataControl.removeAt(idx);
   }
 
+  downloadSampleFile() {
+    const fileName = 'drone_time_series_data';
+    const extension = '.csv';
+    const data = 'Time (YYYY-MM-DD HH:MM:SS),Latitude,Longitude';
+
+    const blob = new Blob([data], {type: 'application/octet-stream'});
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.download = `${fileName}${extension}`;
+    anchor.href = url;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  }
+
+  onFileSelected(event) {
+    this.selectedFile = event.target.files[0];
+    if (!this.selectedFile) {
+      return;
+    }
+    const reader: FileReader = new FileReader();
+    reader.readAsBinaryString(this.selectedFile);
+    reader.onload = (e: any) => {
+      const binarystr: string = e.target.result;
+      const rowWiseArray = binarystr.split('\n');
+
+      for (let i = 1; i < rowWiseArray.length; i++){
+        if (rowWiseArray[i] && !rowWiseArray[i].trim().startsWith(',')) {
+          const timeSeriesDataArray = rowWiseArray[i].split(',');
+          this.timeDataControl.push(this.createTimeLocationForm(timeSeriesDataArray[0], timeSeriesDataArray[1], timeSeriesDataArray[2]));
+        }
+      }
+    }
+  }
+
+  removeFile(){
+    this.selectedFile = null;
+  }
+
   onCancel() {
     this.modalClosed.emit({});
   }
 
   onSubmit() {
-    console.log('drone data', this.droneForm);
     this.modalClosed.emit(this.droneForm);
   }
 

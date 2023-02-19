@@ -18,13 +18,15 @@
   text-decoration: none;
   outline: none;
   color: #fff;
-  background-color: #247aa9;
+  background-color: #0079b8;
   border: none;
-  border-radius: 12px;
+  border-radius: 0.6rem;
   box-shadow: 0 4px #999;
 }
 
-.button:hover {background-color: #1c5793}
+.button:hover {
+  background-color: #004a70;
+}
 
 .button:active {
   background-color: #1c5793;

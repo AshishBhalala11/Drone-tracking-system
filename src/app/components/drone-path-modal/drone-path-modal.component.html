@@ -10,7 +10,26 @@
           <input class="w-50" id="drone-name" formControlName="droneName">
         </div>
 
-        <div class="mt-1">Add time series data of drone location below</div>
+        <div class="mt-1">
+          <div class="grey-text">
+            <span>Upload CSV file below with time series data of drone.</span>
+            <span class="download-link" (click)="downloadSampleFile()">Click here </span>
+            <span>to download sample CSV file.</span>
+          </div>
+          <div class="mt-1">
+            <input class="w-75 d-none" type="file" (click)="fileInput.value = null" value="" accept=".csv"
+            (change)="onFileSelected($event)" #fileInput>
+            <button *ngIf="!selectedFile" class="btn btn-primary" (click)="fileInput.click()">import</button>
+            <div *ngIf="selectedFile">
+              <label class="grey-text">{{ selectedFile.name }}</label>
+              <span class="w3-large cursor-pointer ml-1 grey-text" (click)="removeFile()">
+                <i class="fa fa-trash"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2">Add time series data of drone location below</div>
         <table formArrayName="timeData">
           <thead>
             <th class="w-25">Time</th>
@@ -51,7 +70,8 @@
     </div>
     <div class="modal-footer">
       <div class="modal-footer-button">
-        <button class="btn btn-primary" (click)="onSubmit()">stimulate</button>
+        <button class="btn btn-primary" [disabled]="droneNameControl.invalid || timeDataControl.invalid"
+          (click)="onSubmit()">stimulate</button>
         <button class="btn btn-outline" (click)="onCancel()">cancel</button>
       </div>
     </div>

@@ -7,3 +7,15 @@
   padding: 1rem 0;
 }
 
+.download-link {
+  color: #0079b8;
+  cursor: pointer;
+}
+
+.download-link:hover {
+  color: #004a70;
+}
+
+.grey-text {
+  color: #565656!important;
+}

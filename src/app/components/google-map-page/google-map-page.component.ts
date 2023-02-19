@@ -8,7 +8,7 @@ import {} from 'googlemaps';
 })
 export class GoogleMapPageComponent implements OnInit {
   dronePathModalOpen: boolean = false;
-  droneData: any;
+  dronePathData = [];
 
   @ViewChild('googleMap')
   googleMap: ElementRef;
@@ -37,17 +37,6 @@ export class GoogleMapPageComponent implements OnInit {
         map: this.map
       })
     });
-
-    // this.location = {
-    //   lat: 12.9716,
-    //   lng: 77.5946,
-    // };
-    // setTimeout(() => {
-    //   this.map = new google.maps.Map(this.googleMap.nativeElement, {
-    //     ...this.option,
-    //     center: this.location,
-    //   });
-    // }, 2000)
   }
 
   openDroneModal() {
@@ -56,39 +45,55 @@ export class GoogleMapPageComponent implements OnInit {
 
   modalClosed(data: any) {
     this.dronePathModalOpen = false;
-    this.droneData = data;
-    this.drawDronePath(data);
-
-    console.log('parent', data);
-    data.value['timeData'].forEach((tData) => {
-      const timeData = new Date(tData.time).getTime();
-      console.log(timeData);
-      const localTime = new Date(timeData).toLocaleString();
-      console.log(localTime);
-    });
+    const timeSeriesData = data.value['timeData'];
+    this.addDroneData(data.value['droneName'], timeSeriesData);
   }
 
-  drawDronePath(data: any) {
+  addDroneData(name: string, timeSeriesData: any) {
     const dronePathCoordinates = [];
-    data.value['timeData'].forEach((tData) => {
+    let currLocaion: google.maps.LatLngLiteral;
+
+    const dronePathLine = this.addPoliline(dronePathCoordinates);
+    const marker = this.addMarker(currLocaion);
+
+    timeSeriesData.forEach((tData) => {
       const locationCoordinates = {
         lat: tData.latitude,
         lng: tData.longitude,
       };
       dronePathCoordinates.push(locationCoordinates);
-      setTimeout(() => {
 
-      })
+      let timeRemain = new Date(tData.time).getTime() - new Date().getTime();
+      setTimeout(() => {
+        marker.setPosition(locationCoordinates);
+      }, timeRemain);
     });
 
-    const dronePath = new google.maps.Polyline({
+    dronePathLine.setPath(dronePathCoordinates);
+    dronePathLine.setMap(this.map);
+
+    this.dronePathData.push({
+      name: name,
+      locationMarker: marker,
+      pathPolyLine: dronePathLine,
+      pathCordinates: dronePathCoordinates
+    });
+  }
+
+  addPoliline(dronePathCoordinates: Array<google.maps.LatLngLiteral>) {
+    return new google.maps.Polyline({
       path: dronePathCoordinates,
       geodesic: true,
       strokeColor: '#FF0000',
       strokeOpacity: 1.0,
       strokeWeight: 2,
     });
+  }
 
-    dronePath.setMap(this.map);
+  addMarker(currLocaion: google.maps.LatLngLiteral) {
+    return new google.maps.Marker({
+      position: currLocaion,
+      map: this.map
+    });
   }
 }
